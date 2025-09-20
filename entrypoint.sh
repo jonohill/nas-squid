@@ -31,6 +31,9 @@ chown squid:squid /etc/squid/auth/htpasswd
 
 log "Authentication file created successfully"
 
+# Empty all error template files 
+find /usr/share/squid/errors/en/ -type f -name "ERR_*" -exec truncate -s 0 {} \;
+
 # Initialize squid cache if it doesn't exist
 if [ ! -d "/var/cache/squid/00" ]; then
     log "Initializing Squid cache directory..."
