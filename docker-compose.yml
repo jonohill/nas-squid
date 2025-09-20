@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  squid-proxy:
+    build: .
+    container_name: squid-proxy
+    ports:
+      - "3128:3128"
+    environment:
+      - SQUID_USERNAME=proxyuser
+      - SQUID_PASSWORD=proxypass123
+    volumes:
+      - squid_cache:/var/cache/squid
+      - squid_logs:/var/log/squid
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "netstat", "-tln", "|", "grep", ":3128"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  squid_cache:
+  squid_logs:
